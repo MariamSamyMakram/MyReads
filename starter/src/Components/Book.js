@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { update, get } from "../BooksAPI";
-
 const Book = (props) => {
   const [book, setBook] = useState({});
   /**
@@ -22,15 +21,26 @@ const Book = (props) => {
   return (
     <div className="book">
       <div className="book-top">
-        <div
-          className="book-cover"
-          style={{
-            width: 128,
-            height: 193,
-            backgroundImage:
-              'url("' + props.book.imageLinks.smallThumbnail + '")',
-          }}
-        ></div>
+        {props.book.imageLinks?.smallThumbnail ? (
+          <div
+            className="book-cover"
+            style={{
+              width: 128,
+              height: 193,
+              backgroundImage:
+                'url("' + props.book.imageLinks.smallThumbnail + '")',
+            }}
+          ></div>
+        ) : (
+          <div
+            className="book-cover"
+            style={{
+              width: 128,
+              height: 193,
+              backgroundImage: 'url("https://via.placeholder.com/150")',
+            }}
+          ></div>
+        )}
         <div className="book-shelf-changer">
           <select
             value={book.shelf ? book.shelf : "none"}
@@ -45,7 +55,14 @@ const Book = (props) => {
         </div>
       </div>
       <div className="book-title">{book.title}</div>
-      <div className="book-authors">{book.authors}</div>
+
+      {book.authors ? (
+        <div className="book-authors">
+          {book.authors && book.authors.join(", ")}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
